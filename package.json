@@ -1,0 +1,26 @@
+{
+  "name": "semut-angkot-rest-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.1",
+    "axios": "^0.16.2",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "debug": "^2.6.9",
+    "express": "^4.15.5",
+    "google-auth-library": "^0.11.0",
+    "https": "^1.0.0",
+    "md5": "^2.2.1",
+    "moment": "^2.19.1",
+    "mongodb": "^2.2.33",
+    "mongodb-autoincrement": "^1.0.1",
+    "morgan": "~1.8.1",
+    "requisition": "^1.7.0",
+    "serve-favicon": "^2.4.5"
+  }
+}

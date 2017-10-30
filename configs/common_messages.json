@@ -1,0 +1,57 @@
+{
+  "body_body_empty" : {
+    "success" : false,
+    "message" : "Parameter tidak lengkap",
+    "code" : "001"
+  },
+  "routes_not_found" : {
+    "success" : false,
+    "message" : "Service tidak ditemukan",
+    "code" : "100"
+  },
+  "service_not_responding" : {
+    "success" : false,
+    "message" : "Server tidak merespon",
+    "code" : "500"
+  },
+  "email_not_valid" : {
+    "success" : false,
+    "message" : "Email tidak terdaftar atau password tidak sesuai",
+    "code" : "002"
+  },
+  "phone_not_valid" : {
+    "success" : false,
+    "message" : "Nomor Telepon tidak terdaftar atau password tidak sesuai",
+    "code" : "003"
+  },
+  "username_not_valid" : {
+    "success" : false,
+    "message" : "Username tidak terdaftar atau password tidak sesuai",
+    "code" : "004"
+  },
+  "phone_already" : {
+    "success" : false,
+    "message" : "Nomor Telah digunakan, silahkan login jika Anda sudah terdaftar sebelumnya",
+    "code" : "005"
+  },
+  "email_already" : {
+    "success" : false,
+    "message" : "Email Telah digunakan, silahkan login jika Anda sudah terdaftar sebelumnya",
+    "code" : "006"
+  },
+  "username_already" : {
+    "success" : false,
+    "message" : "Username Telah digunakan, silahkan login jika Anda sudah terdaftar sebelumnya",
+    "code" : "007"
+  },
+  "plat_already" : {
+    "success" : false,
+    "message" : "Plat Nomor Telah digunakan, silahkan login jika Anda sudah terdaftar sebelumnya",
+    "code" : "008"
+  },
+  "session_invalid" : {
+    "success" : false,
+    "message" : "Session tidak valid",
+    "code" : "009"
+  }
+}
