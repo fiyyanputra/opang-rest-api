@@ -103,7 +103,7 @@ updateMitraLocation = (query) => {
   return new Promise((resolve, reject) => {
       userCollection.updateOne({ID: query['ID']},{ $set:
           {
-              'Opang.location.coordinates' : [query['longitude'], query['latitude']],
+              'Opang.location.coordinates' : [parseFloat(query['longitude']), parseFloat(query['latitude'])],
 			  //'Opang.Speed': query['speed'],
               //'Opang.LastUpdate' : new Date(query['time'])
               'Opang.LastUpdate' : new Date()
