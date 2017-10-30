@@ -3,7 +3,7 @@ const moment = require('moment');
 let database = app.db;
 let userCollection = database.collection('tb_user');
 let sessionCollection = database.collection('tb_session');
-let angkotHistory = database.collection('tb_angkot_history');
+let opangHistory = database.collection('tb_opang_history');
 const autoIncrement = require("mongodb-autoincrement");
 const md5 = require('md5');
 const converter = require('../utilities/converter');
@@ -99,16 +99,15 @@ getSession = (userID) => {
 };
 
 
-updateUserLocation = (query) => {
+updateMitraLocation = (query) => {
   return new Promise((resolve, reject) => {
       userCollection.updateOne({ID: query['ID']},{ $set:
           {
-              'Angkot.location.coordinates' : [query['longitude'], query['latitude']],
-              'Angkot.JumlahPenumpang' : query['jumlah_penumpang'],
-			  'Angkot.Speed': query['speed'],
-              //'Angkot.LastUpdate' : new Date(query['time'])
-              'Angkot.LastUpdate' : new Date()
-              /*Angkot : {
+              'Opang.location.coordinates' : [query['longitude'], query['latitude']],
+			  //'Opang.Speed': query['speed'],
+              //'Opang.LastUpdate' : new Date(query['time'])
+              'Opang.LastUpdate' : new Date()
+              /*Opang : {
                   location:
                       {
                           type: 'Point',
@@ -122,13 +121,11 @@ updateUserLocation = (query) => {
 		  if(err){
               reject(err);
           }else {			
-			angkotHistory.insertOne({
+			opangHistory.insertOne({
 				'location' : {
 					'type': 'Point',
 					'coordinates' : [query['longitude'], query['latitude']]
 					},
-				'Speed' : query['speed'],
-				'JumlahPenumpang' : query['jumlah_penumpang'],
 				'LastUpdate' : new Date(),
 				'ID' : query['ID']
 			}, (err, result) => {
@@ -154,23 +151,25 @@ checkSession = (sessid) => {
     });
 };
 
-/** get angkot location**/
-getAngkotLocation = () => {
+/** get Opang location**/
+getOpangLocation = () => {
     return new Promise((resolve, reject) => {
         let dateNow = moment().format("YYYY-MM-DD")+" 00:00:00";
         userCollection.find(
             { $and:
                 [
-                    { ID_role: 20 },
-                    { Angkot: { $exists: true } },
-                    {"Angkot.location.coordinates": {$ne: [0,0] }},
-                    {"Angkot.LastUpdate" : { $gte : new Date(dateNow)}}
+                    { ID_role: 1 },
+                    { Status_online: true},
+                    { Opang: { $exists: true } },
+                    {"Opang.location.coordinates": {$ne: [0,0] }},
+                    {"Opang.LastUpdate" : { $gte : new Date(dateNow)}}
                 ] }
             ).toArray((err, results) =>{
+                
            if(err)reject(err);
            else {
                for(let i = 0; i < results.length; i++){
-                   results[i]['Angkot']['LastUpdate'] = converter.convertISODateToString(results[i]['Angkot']['LastUpdate']);
+                   results[i]['Opang']['LastUpdate'] = converter.convertISODateToString(results[i]['Opang']['LastUpdate']);
                }
                resolve(results);
            }
@@ -212,7 +211,7 @@ checkCompleteSession = (sessid) => {
 changeOnlineStatus = (status, userID) => {
     return new Promise((resolve, reject) => {
         userCollection.updateOne({ID: userID}, {$set: {Status_online: status}}, (err, items) => {
-            console.log(items);
+            //console.log(items);
             if(err) reject(err);
             else resolve(items);
         });
@@ -344,6 +343,7 @@ insertMitra = (query) => {
                     "Reputation" : 0,
                     "deposit" : 0,
                     "ID_role" : 1,
+                    "Status_online" : null,
                     "Opang" : {
                         "LastUpdate" : new Date(),
                         "PlatNomor" : platNomor,
@@ -425,8 +425,8 @@ insertUser = (query) => {
     });
 };
 
-/* get data angkot by session */
-getDataAngkotBySession = (sessid) => {
+/* get data opang by session */
+getDataOpangBySession = (sessid) => {
     return new Promise((resolve, reject) =>{
         sessionCollection.find({ID: sessid, "EndTime": "0000-00-00 00:00:00"})
             .toArray((err, results) => {
@@ -438,8 +438,9 @@ getDataAngkotBySession = (sessid) => {
                         if(err)reject(err);
                         else resolve(
                             {
-                                PlatNomor: ress[0].Angkot.PlatNomor,
-                                Trayek: ress[0].Angkot.Trayek
+                                PlatNomor: ress[0].Opang.PlatNomor,
+                                Nama: ress[0].Opang.Name,
+                                Phone: ress[0].Opang.Phonenumber
                             });
                     });
                 }else resolve(null);
@@ -468,7 +469,7 @@ module.exports = {
     insertMitra:insertMitra,
     findPlatNomor:findPlatNomor,
     insertUser:insertUser,
-    updateUserLocation:updateUserLocation,
-    getAngkotLocation:getAngkotLocation,
-	getDataAngkotBySession: getDataAngkotBySession
+    updateMitraLocation:updateMitraLocation,
+    getOpangLocation:getOpangLocation,
+	getDataOpangBySession: getDataOpangBySession
 };

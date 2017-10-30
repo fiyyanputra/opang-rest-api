@@ -129,7 +129,23 @@ router.post('/register', async(req, res) => {
     }
 });
 
+router.post('/set-online', async(req, res) =>{
+    let query = {}
+    let isOnline = req['body']['is_online'] == 1 ? true: false;
+    let userID = req['body']['user_id'];
+    query['ID'] = parseInt(userID),
+    query['latitude'] = req['body']['latitude'];
+    query['longitude'] = req['body']['longitude'];
 
+    await userModel.changeOnlineStatus(isOnline, parseInt(userID));
+    await userModel.updateMitraLocation(query);
+    res.status(200).send({success: true, message: "Berhasil Mengubah Status", code: "000"});    
+});
+
+router.get('/get-opang-location', async(req, res) =>{
+    let data = await userModel.getOpangLocation();
+    res.status(200).send({success: true, opang: data});    
+});
 
 router.post('/status', async(req, res) => {
     let query = req.body;
