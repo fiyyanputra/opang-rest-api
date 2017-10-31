@@ -158,7 +158,7 @@ getOpangLocation = () => {
         userCollection.find(
             { $and:
                 [
-                    { ID_role: 1 },
+                    { ID_role: 94 },
                     { Status_online: true},
                     { Opang: { $exists: true } },
                     {"Opang.location.coordinates": {$ne: [0,0] }},

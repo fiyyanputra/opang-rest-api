@@ -6,7 +6,7 @@ const bodyChecker = require('../utilities/body_checker');
 
 
 router.post('/login', async(req, res) => {
-    let bodyComplete = bodyChecker.check(['Token', 'Strategy', 'id', 'Name', 'Email', 'RoleID'], req.body);
+    let bodyComplete = bodyChecker.check(['Token', 'Strategy', 'id', 'Name', 'Email'], req.body);
     if(bodyComplete) {
         try {
             console.log(req.body);
